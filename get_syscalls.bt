@@ -1,0 +1,19 @@
+#!/usr/bin/env bpftrace
+
+BEGIN
+{
+}
+
+tracepoint:raw_syscalls:sys_enter
+{
+    @syscall[args->id] = count()
+}
+
+interval:hz:1
+{
+    printf("{\n");
+    print(@syscall, 5);
+    print("}\n");
+    clear(@syscall);
+}
+
