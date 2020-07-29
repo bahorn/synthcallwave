@@ -7,13 +7,17 @@ port = mido.open_output('FLUID Synth (3589726):Synth input port (3589726:0) 128:
 
 
 def play(f):
-    print(f)
     messages = []
+
+    total = sum(map(lambda x: x[1], list(f.items())))
+    print(total)
+
     for syscall, count in f.items():
-        note = int((((syscall) % 512)/512)*127)
-        time = math.log(count + 2, 1.5) / 10
+        note = int((((syscall+10) % 512)/512)*127)
+        time = math.log(count + 2, 1.5) / 1000
+        velocity = 127-int((count/total)*note)
         messages.append(mido.Message(
-            'note_on', note=note, time=time, velocity=note
+            'note_on', note=note, time=time, velocity=velocity
         ))
 
     for message in messages:

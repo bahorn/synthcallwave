@@ -9,10 +9,10 @@ tracepoint:raw_syscalls:sys_enter
     @syscall[args->id] = count()
 }
 
-interval:hz:1
+interval:hz:5
 {
     printf("{\n");
-    print(@syscall, 5);
+    print(@syscall,3);
     print("}\n");
     clear(@syscall);
 }
